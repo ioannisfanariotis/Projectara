@@ -8,6 +8,8 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.example.projectara.R
 import com.example.projectara.databinding.ActivitySignUpBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class SignUpActivity : BaseActivity() {
 
@@ -45,11 +47,23 @@ class SignUpActivity : BaseActivity() {
 
     private fun registerUser(){
         val username: String = binding?.username?.text.toString().trim { it <= ' ' }
-        val email: String = binding?.email?.text.toString().trim { it <= ' ' }
-        val password: String = binding?.password?.text.toString().trim { it <= ' ' }
+        val email: String = binding?.suEmail?.text.toString().trim { it <= ' ' }
+        val password: String = binding?.suPassword?.text.toString().trim { it <= ' ' }
 
         if(validateForm(username, email, password)){
-            Toast.makeText(this, "Completed registration!", Toast.LENGTH_SHORT).show()
+            startLoading(resources.getString(R.string.wait))
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                cancelLoading()
+                if (task.isSuccessful) {
+                    val firebaseUser: FirebaseUser = task.result!!.user!!
+                    val registeredEmail = firebaseUser.email
+                    Toast.makeText(this, "$username successfully registered with $email", Toast.LENGTH_SHORT).show()
+                    FirebaseAuth.getInstance().signOut()
+                    finish()
+                } else {
+                    Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

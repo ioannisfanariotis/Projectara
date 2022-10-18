@@ -64,7 +64,7 @@
                     android:layout_marginEnd="16dp">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/email"
+                        android:id="@+id/si_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
@@ -81,7 +81,7 @@
                     android:layout_marginEnd="16dp">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/password"
+                        android:id="@+id/si_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
@@ -91,7 +91,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/sign_up"
+                    android:id="@+id/sign_in"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

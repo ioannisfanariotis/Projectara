@@ -81,7 +81,7 @@
                     android:layout_marginEnd="16dp">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/email"
+                        android:id="@+id/su_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
@@ -98,7 +98,7 @@
                     android:layout_marginEnd="16dp">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/password"
+                        android:id="@+id/su_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/password"
