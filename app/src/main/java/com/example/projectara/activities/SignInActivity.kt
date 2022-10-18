@@ -10,6 +10,8 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.example.projectara.R
 import com.example.projectara.databinding.ActivitySignInBinding
+import com.example.projectara.firebase.FireStoreClass
+import com.example.projectara.models.User
 import com.google.firebase.auth.FirebaseAuth
 
 class SignInActivity : BaseActivity() {
@@ -56,13 +58,10 @@ class SignInActivity : BaseActivity() {
         if (validateForm(email, password)){
             startLoading(resources.getString(R.string.wait))
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
-                cancelLoading()
                 if (task.isSuccessful){
-                    Log.d("Sign in", "success")
-                    Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show()
-                    val user = auth.currentUser
-                    startActivity(Intent(this, MainActivity::class.java))
+                    FireStoreClass().signInUser(this)
                 }else{
+                    cancelLoading()
                     Log.w("Sign in", "failure", task.exception)
                     Toast.makeText(this, "The user doesn't exist!", Toast.LENGTH_SHORT).show()
                 }
@@ -83,6 +82,14 @@ class SignInActivity : BaseActivity() {
                 true
             }
         }
+    }
+
+    fun successfullySignIn(user: User){
+        cancelLoading()
+        Log.d("Sign in", "success")
+        Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     override fun onDestroy() {

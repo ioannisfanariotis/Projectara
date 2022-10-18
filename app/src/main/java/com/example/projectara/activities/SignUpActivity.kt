@@ -3,11 +3,14 @@ package com.example.projectara.activities
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.projectara.R
 import com.example.projectara.databinding.ActivitySignUpBinding
+import com.example.projectara.firebase.FireStoreClass
+import com.example.projectara.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -53,14 +56,14 @@ class SignUpActivity : BaseActivity() {
         if(validateForm(username, email, password)){
             startLoading(resources.getString(R.string.wait))
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                cancelLoading()
                 if (task.isSuccessful) {
                     val firebaseUser: FirebaseUser = task.result!!.user!!
                     val registeredEmail = firebaseUser.email
-                    Toast.makeText(this, "$username successfully registered with $email", Toast.LENGTH_SHORT).show()
-                    FirebaseAuth.getInstance().signOut()
-                    finish()
+                    val user = User(firebaseUser.uid, username, registeredEmail!!)
+                    FireStoreClass().registerUser(this, user)
                 } else {
+                    cancelLoading()
+                    Log.w("Sign up", "failure", task.exception)
                     Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -84,6 +87,14 @@ class SignUpActivity : BaseActivity() {
                 true
             }
         }
+    }
+
+    fun successfulRegistration(){
+        cancelLoading()
+        Log.d("Sign up", "success")
+        Toast.makeText(this, "Successfully registered!", Toast.LENGTH_SHORT).show()
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
     override fun onDestroy() {

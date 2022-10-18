@@ -9,6 +9,7 @@ import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.projectara.databinding.ActivitySplashBinding
+import com.example.projectara.firebase.FireStoreClass
 
 class SplashActivity : BaseActivity() {
 
@@ -33,7 +34,13 @@ class SplashActivity : BaseActivity() {
         binding?.splash?.typeface = typeFace
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, IntroActivity::class.java))
+            var currentUserID = FireStoreClass().getId()
+
+            if (currentUserID.isNotEmpty()){
+                startActivity(Intent(this, MainActivity::class.java))
+            }else{
+                startActivity(Intent(this, IntroActivity::class.java))
+            }
             finish()
         }, 2500)
     }
