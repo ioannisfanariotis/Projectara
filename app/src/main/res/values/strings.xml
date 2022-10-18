@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Projectara</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="started">LET\'S GET STARTED!</string>
+    <string name="image">image</string>
+    <string name="text">Collaborate and Plan Together Across Multiple Devices on Projectara’s Minimalist Interface.</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="enter_up">Please enter your username, your email and a password to register</string>
+    <string name="enter_in">Please enter your email and your password to sign in</string>
+    <string name="wait">Please wait…</string>
+</resources>

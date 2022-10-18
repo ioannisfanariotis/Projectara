@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "359053962415",
+    "project_id": "projectara-7aa35",
+    "storage_bucket": "projectara-7aa35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359053962415:android:c64e350680c1a59cd7b85a",
+        "android_client_info": {
+          "package_name": "com.example.projectara"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359053962415-e02otbdus78vhi6gujhpi3gn92fk1cmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCx8FvUTU_1oPPN4aEdb-YRv-pMqVtV8s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359053962415-e02otbdus78vhi6gujhpi3gn92fk1cmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
