@@ -11,4 +11,6 @@
     <string name="enter_up">Please enter your username, your email and a password to register</string>
     <string name="enter_in">Please enter your email and your password to sign in</string>
     <string name="wait">Please wait…</string>
+    <string name="profile">My Profile</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
