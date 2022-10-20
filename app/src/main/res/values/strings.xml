@@ -13,4 +13,6 @@
     <string name="wait">Please wait…</string>
     <string name="profile">My Profile</string>
     <string name="sign_out">Sign Out</string>
+    <string name="number">Number</string>
+    <string name="update">UPDATE</string>
 </resources>

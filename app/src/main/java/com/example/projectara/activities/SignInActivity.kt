@@ -40,7 +40,7 @@ class SignInActivity : BaseActivity() {
         val actionBar = supportActionBar
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_back)
         }
         binding?.toolbarSignIn?.setNavigationOnClickListener{
             onBackPressed()
@@ -59,7 +59,7 @@ class SignInActivity : BaseActivity() {
             startLoading(resources.getString(R.string.wait))
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
                 if (task.isSuccessful){
-                    FireStoreClass().signInUser(this)
+                    FireStoreClass().loadUserData(this)
                 }else{
                     cancelLoading()
                     Log.w("Sign in", "failure", task.exception)
