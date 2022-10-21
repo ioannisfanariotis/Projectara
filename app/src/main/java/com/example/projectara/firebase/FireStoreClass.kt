@@ -2,6 +2,7 @@ package com.example.projectara.firebase
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import com.example.projectara.activities.MainActivity
 import com.example.projectara.activities.SignInActivity
 import com.example.projectara.activities.SignUpActivity
@@ -61,4 +62,18 @@ class FireStoreClass {
         }
         return currentUserID
     }
+
+    fun updateUser(activity: UpdateActivity, userHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.USERS).document(getId()).update(userHashMap).addOnSuccessListener {
+            Log.i(activity.javaClass.simpleName, "Success!")
+            Toast.makeText(activity, "Success!", Toast.LENGTH_SHORT).show()
+            activity.profileUpdateSuccess()
+        }.addOnFailureListener {
+            e -> activity.cancelLoading()
+            Log.e(activity.javaClass.simpleName, "Error on updating!")
+            Toast.makeText(activity, "Error on updating!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 }
