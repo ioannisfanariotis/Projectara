@@ -56,7 +56,7 @@ class UpdateActivity : BaseActivity() {
 
         binding?.update?.setOnClickListener {
             if (selectedImageFile != null){
-                uploadImage()
+                uploadProfileImage()
             }else{
                 startLoading(resources.getString(R.string.wait))
                 updateUser()
@@ -101,7 +101,7 @@ class UpdateActivity : BaseActivity() {
         }
     }
 
-    private fun uploadImage(){
+    private fun uploadProfileImage(){
         startLoading(resources.getString(R.string.wait))
         if (selectedImageFile != null){
             val reference: StorageReference = FirebaseStorage.getInstance().reference.child("USER_IMAGE" + System.currentTimeMillis() + "." + Constants.getFileExtension(this, selectedImageFile))
@@ -121,7 +121,6 @@ class UpdateActivity : BaseActivity() {
             }
         }
     }
-
 
     private fun updateUser(){
         val userHashMap = HashMap<String, Any>()
