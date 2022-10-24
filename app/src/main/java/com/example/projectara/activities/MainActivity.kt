@@ -5,12 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.projectara.R
+import com.example.projectara.adapters.BoardItemAdapter
 import com.example.projectara.databinding.ActivityMainBinding
 import com.example.projectara.firebase.FireStoreClass
+import com.example.projectara.models.Board
 import com.example.projectara.models.User
 import com.example.projectara.utils.Constants
 import com.google.android.material.navigation.NavigationView
@@ -21,7 +25,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private var binding: ActivityMainBinding? = null
     companion object{
-        private const val PROFILE_REQUEST_CODE: Int = 100
+        const val PROFILE_REQUEST_CODE: Int = 100
+        const val CREATE_BOARD_REQUEST_CODE: Int = 200
     }
     private lateinit var userName: String
 
@@ -30,14 +35,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
-        setSupportActionBar(binding?.barMain?.mainToolbar)
-        binding?.barMain?.mainToolbar?.setNavigationIcon(R.drawable.ic_navigation_menu)
-        binding?.barMain?.mainToolbar?.setNavigationOnClickListener {
+        setSupportActionBar(binding?.mainContent?.mainToolbar)
+        binding?.mainContent?.mainToolbar?.setNavigationIcon(R.drawable.ic_navigation_menu)
+        binding?.mainContent?.mainToolbar?.setNavigationOnClickListener {
             toggle()
         }
         binding?.navView?.setNavigationItemSelectedListener(this)
 
-        binding?.barMain?.fab?.setOnClickListener {
+        binding?.mainContent?.fab?.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
             intent.putExtra(Constants.NAME, userName)
             startActivity(intent)
@@ -72,13 +77,36 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
-    fun updateNavigationUserDetails(user: User){
+    fun updateNavigationUserDetails(user: User, readBoardsList: Boolean){
+        cancelLoading()
         userName = user.username
         binding?.navView?.getHeaderView(0)?.findViewById<TextView>(R.id.username)?.let {
             it.text = user.username
         }
         val userImage = binding?.navView?.getHeaderView(0)?.findViewById<CircleImageView>(R.id.picture)
         Glide.with(this).load(user.image).placeholder(R.drawable.ic_background).into(userImage!!)
+
+        if (readBoardsList) {
+            startLoading(resources.getString(R.string.wait))
+            FireStoreClass().getBoardList(this)
+        }
+    }
+
+    fun showBoardToUi(boardsList: ArrayList<Board>){
+        cancelLoading()
+
+        if (boardsList.size > 0) {
+            binding?.mainContent?.noBoards?.visibility = View.GONE
+            binding?.mainContent?.rvBoard?.visibility = View.VISIBLE
+            binding?.mainContent?.rvBoard?.layoutManager = LinearLayoutManager(this)
+            binding?.mainContent?.rvBoard?.setHasFixedSize(true)
+
+            val adapter = BoardItemAdapter(this, boardsList)
+            binding?.mainContent?.rvBoard?.adapter = adapter
+        } else {
+            binding?.mainContent?.noBoards?.visibility = View.VISIBLE
+            binding?.mainContent?.rvBoard?.visibility = View.GONE
+        }
     }
 
     override fun onBackPressed() {
@@ -93,6 +121,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == PROFILE_REQUEST_CODE){
             FireStoreClass().loadUserData(this)
+        }else if(resultCode == Activity.RESULT_OK && requestCode == CREATE_BOARD_REQUEST_CODE){
+            FireStoreClass().getBoardList(this)
         }else{
             Log.e("Cancelled", "Cancelled")
         }
