@@ -19,4 +19,8 @@
     <string name="create">CREATE</string>
     <string name="board_name">Board Name</string>
     <string name="nothing">No boards available! Try to create one!</string>
+    <string name="add_list">Add List</string>
+    <string name="list_name">List Name</string>
+    <string name="card_name">Card Name</string>
+    <string name="add_card">Add Card</string>
 </resources>

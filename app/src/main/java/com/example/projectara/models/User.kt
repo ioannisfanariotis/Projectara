@@ -18,10 +18,11 @@ data class User (
         parcel.readString()!!,
         parcel.readLong(),
         parcel.readString()!!
-    ) {
-    }
+    )
 
-    override fun describeContents() = 0
+    override fun describeContents(): Int {
+        return 0
+    }
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(id)

@@ -101,4 +101,15 @@ class FireStoreClass {
             Toast.makeText(activity, "Error on board display!", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun getBoardDetails(activity: TaskActivity, documentID: String){
+        mFireStore.collection(Constants.BOARDS).document(documentID).get().addOnSuccessListener {
+                document -> Log.i(activity.javaClass.simpleName, document.toString())
+            activity.boardDetails(document.toObject(Board::class.java)!!)
+        }.addOnFailureListener {
+                exception -> activity.cancelLoading()
+            Log.e(activity.javaClass.simpleName, "Error on board display!", exception)
+            Toast.makeText(activity, "Error on board display!", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
