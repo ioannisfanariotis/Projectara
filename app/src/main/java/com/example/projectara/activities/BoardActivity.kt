@@ -107,17 +107,17 @@ class BoardActivity : BaseActivity() {
             val reference: StorageReference = FirebaseStorage.getInstance().reference.child("BOARD_IMAGE" + System.currentTimeMillis() + "." + Constants.getFileExtension(this, selectedImageFile))
             reference.putFile(selectedImageFile!!).addOnSuccessListener {
                     task ->
-                Log.e("Board Image URL", task.metadata!!.reference!!.downloadUrl.toString())
-                task.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
-                        uri ->
-                    Log.i("Downloadable Image URL", uri.toString())
-                    boardImageURL = uri.toString()
-                    createBoard()
+                        Log.e("Board Image URL", task.metadata!!.reference!!.downloadUrl.toString())
+                        task.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                                uri ->
+                                    Log.i("Downloadable Image URL", uri.toString())
+                                    boardImageURL = uri.toString()
+                                    createBoard()
                 }
             }.addOnFailureListener{
                     exception ->
-                Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
-                cancelLoading()
+                        Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
+                        cancelLoading()
             }
         }
     }

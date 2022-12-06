@@ -23,19 +23,20 @@ class FireStoreClass {
     }
 
     fun loadUserData(activity: Activity, readBoardsList: Boolean = false){
-        mFireStore.collection(Constants.USERS).document(getId()).get().addOnSuccessListener { document ->
-            val loggedUser = document.toObject(User::class.java)!!
-            when(activity){
-                is SignInActivity -> {
-                    activity.successfullySignIn(loggedUser)
-                }
-                is MainActivity -> {
-                    activity.updateNavigationUserDetails(loggedUser, readBoardsList)
-                }
-                is UpdateActivity -> {
-                    activity.setUserDataInUI(loggedUser)
-                }
-            }
+        mFireStore.collection(Constants.USERS).document(getId()).get().addOnSuccessListener {
+                document ->
+                    val loggedUser = document.toObject(User::class.java)!!
+                    when(activity){
+                        is SignInActivity -> {
+                            activity.successfullySignIn(loggedUser)
+                        }
+                        is MainActivity -> {
+                            activity.updateNavigationUserDetails(loggedUser, readBoardsList)
+                        }
+                        is UpdateActivity -> {
+                            activity.setUserDataInUI(loggedUser)
+                        }
+                    }
         }.addOnFailureListener {
             when(activity){
                 is SignInActivity -> {
@@ -67,9 +68,10 @@ class FireStoreClass {
             Toast.makeText(activity, "Success!", Toast.LENGTH_SHORT).show()
             activity.profileUpdateSuccess()
         }.addOnFailureListener {
-            exception -> activity.cancelLoading()
-            Log.e(activity.javaClass.simpleName, "Error on updating!", exception)
-            Toast.makeText(activity, "Error on updating!", Toast.LENGTH_SHORT).show()
+            exception ->
+                activity.cancelLoading()
+                Log.e(activity.javaClass.simpleName, "Error on updating!", exception)
+                Toast.makeText(activity, "Error on updating!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -79,37 +81,44 @@ class FireStoreClass {
             Toast.makeText(activity, "Board Created!", Toast.LENGTH_SHORT).show()
             activity.boardCreatedSuccess()
         }.addOnFailureListener {
-                exception -> activity.cancelLoading()
-            Log.e(activity.javaClass.simpleName, "Error on board creation!", exception)
-            Toast.makeText(activity, "Error on board creation!", Toast.LENGTH_SHORT).show()
+                exception ->
+                    activity.cancelLoading()
+                    Log.e(activity.javaClass.simpleName, "Error on board creation!", exception)
+                    Toast.makeText(activity, "Error on board creation!", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun getBoardList(activity: MainActivity){
         mFireStore.collection(Constants.BOARDS).whereArrayContains(Constants.ASSIGNED_TO, getId()).get().addOnSuccessListener {
-            document -> Log.i(activity.javaClass.simpleName, document.documents.toString())
-            val boardList: ArrayList<Board> = ArrayList()
-            for (i in document.documents){
-                val board = i.toObject(Board::class.java)
-                board?.documentId = i.id
-                boardList.add(board!!)
-            }
-            activity.showBoardToUi(boardList)
+            document ->
+                Log.i(activity.javaClass.simpleName, document.documents.toString())
+                val boardList: ArrayList<Board> = ArrayList()
+                for (i in document.documents){
+                    val board = i.toObject(Board::class.java)
+                    board?.documentId = i.id
+                    boardList.add(board!!)
+                }
+                activity.showBoardToUi(boardList)
         }.addOnFailureListener {
-                exception -> activity.cancelLoading()
-            Log.e(activity.javaClass.simpleName, "Error on board display!", exception)
-            Toast.makeText(activity, "Error on board display!", Toast.LENGTH_SHORT).show()
+                exception ->
+                    activity.cancelLoading()
+                    Log.e(activity.javaClass.simpleName, "Error on board display!", exception)
+                    Toast.makeText(activity, "Error on board display!", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun getBoardDetails(activity: TaskActivity, documentID: String){
         mFireStore.collection(Constants.BOARDS).document(documentID).get().addOnSuccessListener {
-                document -> Log.i(activity.javaClass.simpleName, document.toString())
-            activity.boardDetails(document.toObject(Board::class.java)!!)
+                document ->
+                    Log.i(activity.javaClass.simpleName, document.toString())
+                    val board = document.toObject(Board::class.java)!!
+                    board.documentId = document.id
+                    activity.boardDetails(board)
         }.addOnFailureListener {
-                exception -> activity.cancelLoading()
-            Log.e(activity.javaClass.simpleName, "Error on board display!", exception)
-            Toast.makeText(activity, "Error on board display!", Toast.LENGTH_SHORT).show()
+                exception ->
+                    activity.cancelLoading()
+                    Log.e(activity.javaClass.simpleName, "Error on board display!", exception)
+                    Toast.makeText(activity, "Error on board display!", Toast.LENGTH_SHORT).show()
         }
     }
 }

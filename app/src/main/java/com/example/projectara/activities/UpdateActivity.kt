@@ -111,13 +111,13 @@ class UpdateActivity : BaseActivity() {
                     task.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
                         uri ->
                             Log.i("Downloadable Image URL", uri.toString())
-                        profileImageURL = uri.toString()
-                        updateUser()
+                            profileImageURL = uri.toString()
+                            updateUser()
                     }
             }.addOnFailureListener{
                 exception ->
-                Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
-                cancelLoading()
+                    Toast.makeText(this, exception.message, Toast.LENGTH_SHORT).show()
+                    cancelLoading()
             }
         }
     }

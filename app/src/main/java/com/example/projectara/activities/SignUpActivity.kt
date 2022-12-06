@@ -55,17 +55,18 @@ class SignUpActivity : BaseActivity() {
 
         if(validateForm(username, email, password)){
             startLoading(resources.getString(R.string.wait))
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val firebaseUser: FirebaseUser = task.result!!.user!!
-                    val registeredEmail = firebaseUser.email
-                    val user = User(firebaseUser.uid, username, registeredEmail!!)
-                    FireStoreClass().registerUser(this, user)
-                } else {
-                    cancelLoading()
-                    Log.w("Sign up", "failure", task.exception)
-                    Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
-                }
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+                    task ->
+                        if (task.isSuccessful) {
+                            val firebaseUser: FirebaseUser = task.result!!.user!!
+                            val registeredEmail = firebaseUser.email
+                            val user = User(firebaseUser.uid, username, registeredEmail!!)
+                            FireStoreClass().registerUser(this, user)
+                        } else {
+                            cancelLoading()
+                            Log.w("Sign up", "failure", task.exception)
+                            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                        }
             }
         }
     }

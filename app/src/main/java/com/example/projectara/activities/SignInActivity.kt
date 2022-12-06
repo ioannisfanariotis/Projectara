@@ -57,14 +57,15 @@ class SignInActivity : BaseActivity() {
 
         if (validateForm(email, password)){
             startLoading(resources.getString(R.string.wait))
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){ task ->
-                if (task.isSuccessful){
-                    FireStoreClass().loadUserData(this)
-                }else{
-                    cancelLoading()
-                    Log.w("Sign in", "failure", task.exception)
-                    Toast.makeText(this, "The user doesn't exist!", Toast.LENGTH_SHORT).show()
-                }
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this){
+                    task ->
+                        if (task.isSuccessful){
+                            FireStoreClass().loadUserData(this)
+                        }else{
+                            cancelLoading()
+                            Log.w("Sign in", "failure", task.exception)
+                            Toast.makeText(this, "The user doesn't exist!", Toast.LENGTH_SHORT).show()
+                        }
             }
         }
     }
